@@ -71,8 +71,8 @@ export const loginUser = async (req: Request, res: Response) => {
     }
 
     // Generate Token
-    const token = generateToken(userExists);
-
+    const token = await generateToken(userExists);
+    console.log("Generated Token:", token);
     return res.status(200).json({ message: "Login successful", token });
   } catch (error) {
     console.error("Error during user registration:", error);
