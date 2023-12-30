@@ -7,20 +7,21 @@ dotenv.config();
 export const generateToken = async (user: UserAttributes) => {
   const jwtSecret = process.env.JWT_SECRET as Secret;
 
-  if (!jwtSecret) {
-    throw new Error("JWT_SECRET is not defined in the environment variables.");
+  try {
+    const token = jwt.sign(
+      {
+        id: user.id,
+        email: user.email,
+        firstName: user.firstName,
+        lastName: user.lastName,
+      },
+      jwtSecret,
+      { expiresIn: "1d" }
+    );
+
+    return token;
+  } catch (error) {
+    console.error("Error generating JWT:", error);
+    throw new Error("Failed to generate JWT.");
   }
-
-  const token = jwt.sign(
-    {
-      id: user.id,
-      email: user.email,
-      firstName: user.firstName,
-      lastName: user.lastName,
-    },
-    jwtSecret,
-    { expiresIn: "1d" }
-  );
-
-  return token;
 };
