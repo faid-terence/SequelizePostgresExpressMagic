@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import db from "../../models/index";
 
-
 export const registerUser = async (req: Request, res: Response) => {
   const { firstName, lastName, email, password } = req.body;
   if (!firstName || !lastName || !email || !password) {
