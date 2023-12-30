@@ -34,8 +34,25 @@ export const getAllRoles = async (req: Request, res: Response) => {
     }
     return res.status(200).json({ message: "Retrieving roles", roles });
   } catch (error: any) {
-    return error.message;
+    return res.status(500).json({ message: error.message });
   }
 };
 
+export const getRoleById = async (req: Request, res: Response) => {
+  const roleId = req.params.id;
+  if (!roleId) {
+    return res.status(400).json({ message: "Invalid roleId" });
+  }
 
+  try {
+    // const role = await db.Role.findOne({ where: { id: roleId } });
+    const role = await db.Role.findByPk(roleId);
+    if (!role) {
+      return res.status(404).json({ message: "Role Not Found" });
+    }
+    return res.status(200).json({ message: "Retrieving role.......", role });
+  } catch (error) {
+    console.error("Error in getRoleById:", error);
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+};
