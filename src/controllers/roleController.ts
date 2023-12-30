@@ -25,3 +25,17 @@ export const createRole = async (req: Request, res: Response) => {
     return res.status(500).json({ message: error.message });
   }
 };
+
+export const getAllRoles = async (req: Request, res: Response) => {
+  try {
+    const roles = await db.Role.findAll({ include: [] });
+    if (!roles) {
+      return res.status(404).json({ message: "No Roles Found" });
+    }
+    return res.status(200).json({ message: "Retrieving roles", roles });
+  } catch (error: any) {
+    return error.message;
+  }
+};
+
+
