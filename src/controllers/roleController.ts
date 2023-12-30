@@ -56,3 +56,30 @@ export const getRoleById = async (req: Request, res: Response) => {
     return res.status(500).json({ message: "Internal Server Error" });
   }
 };
+
+export const updateRole = async (req: Request, res: Response) => {
+  const roleId = req.params.id;
+  const { roleName, roleDescription } = req.body;
+
+  if (!roleId) {
+    return res.status(400).json({ message: "Invalid roleId" });
+  }
+  try {
+    const role = await db.Role.findByPk(roleId);
+    if (!role) {
+      return res.status(404).json({ message: "Role Not Found" });
+    }
+    if (req.body.roleName) {
+      role.Name = req.body.roleName;
+    }
+    if (req.body.roleDescription) {
+      role.description = req.body.description;
+    }
+
+    const updatedRole = await role.save();
+    return res.status(200).json({
+      message: "Role Updated Successful...!",
+      updatedRole,
+    });
+  } catch (error) {}
+};
