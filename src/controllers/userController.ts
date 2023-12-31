@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import db from "../../models/index";
+import { hashPassword } from "../utilities/hashPassword";
 
 export const findAllUsers = async (req: Request, res: Response) => {
   try {
@@ -33,6 +34,38 @@ export const findUserById = async (req: Request, res: Response) => {
     }
     return res.status(200).json({
       message: "User Found.....!",
+      user,
+    });
+  } catch (error: any) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+export const updateUser = async (req: Request, res: Response) => {
+  const id = req.params.id;
+  const { firstName, lastName, password } = req.body;
+  try {
+    const user = await db.User.findOne({ where: { id: id } });
+
+    if (!user) {
+      return res.status(404).json({
+        message: "User Not Found",
+      });
+    }
+    if (req.body.firstName) {
+      user.firstName = req.body.firstName;
+    }
+    if (req.body.lastName) {
+      user.lastName = req.body.lastName;
+    }
+    if (req.body.password) {
+      const newPassword = await hashPassword(req.body.password);
+      user.password = newPassword;
+    }
+    await user.save();
+
+    return res.status(201).json({
+      message: "Profile Updated Successful.........",
       user,
     });
   } catch (error: any) {
