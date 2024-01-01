@@ -1,10 +1,11 @@
 import { NextFunction, Request, Response } from "express";
 import db from "../../models/index";
 import jwt, { Secret } from "jsonwebtoken";
+import { RoleAttributes } from "../Interfaces";
 
 interface CustomRequest extends Request {
-  userId?: string; // Modify the type based on your actual userId type
-  roles?: []; // Modify the type based on your actual role type
+  userId?: string;
+  roles?: [];
 }
 
 export const isAuthenticated = async (
@@ -37,3 +38,35 @@ export const isAuthenticated = async (
     }
   }
 };
+
+export const restrict =
+  (roles: string | string[]) =>
+  (req: CustomRequest, res: Response, next: NextFunction) => {
+    const userRoles: string[] = (req.roles || []) as string[];
+
+    console.log("User Roles:", userRoles);
+
+    if (Array.isArray(roles)) {
+      console.log("Expected Roles:", roles);
+
+      // Check if any of the user's roles are included in the specified roles
+      const authorized = roles.some((role) => userRoles.includes(role));
+
+      if (!authorized) {
+        return res
+          .status(401)
+          .json({ success: false, message: "You're not authorized !!" });
+      }
+    } else {
+      console.log("Expected Single Role:", roles);
+
+      // Check if the user has the specified single role
+      if (!userRoles.includes(roles)) {
+        return res
+          .status(401)
+          .json({ success: false, message: "You're not authorized" });
+      }
+    }
+
+    next();
+  };
