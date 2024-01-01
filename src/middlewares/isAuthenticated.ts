@@ -1,7 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import db from "../../models/index";
 import jwt, { Secret } from "jsonwebtoken";
-import { RoleAttributes } from "../Interfaces";
 
 interface CustomRequest extends Request {
   userId?: string;
