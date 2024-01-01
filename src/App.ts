@@ -3,6 +3,7 @@ import { connectDB } from "./config/dbConnection";
 import authRoutes from "./routes/authRoutes";
 import usersRoutes from "./routes/userRoutes";
 import rolesRoutes from "./routes/rolesRoutes";
+import userRolesRoutes from "./routes/userRoleRoutes";
 import cors from "cors";
 
 const app = express();
@@ -21,6 +22,7 @@ app.use(cors(corsOptions));
 app.use("/auth", authRoutes);
 app.use("/users", usersRoutes);
 app.use("/roles", rolesRoutes);
+app.use("/user", userRolesRoutes);
 
 app.listen(port, () => {
   connectDB();
