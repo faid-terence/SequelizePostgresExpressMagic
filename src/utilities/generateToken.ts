@@ -14,6 +14,7 @@ export const generateToken = async (user: UserAttributes) => {
         email: user.email,
         firstName: user.firstName,
         lastName: user.lastName,
+        role: user.Role,
       },
       jwtSecret,
       { expiresIn: "1d" }

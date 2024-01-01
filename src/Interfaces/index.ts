@@ -4,4 +4,5 @@ export interface UserAttributes {
   lastName: string;
   email: string;
   password: string;
+  Role: string;
 }
