@@ -89,7 +89,7 @@ export const viewUserRoles = async (req: Request, res: Response) => {
         {
           model: db.Role,
           as: "Roles",
-          attributes: ["id", "Name", "description"],
+          attributes: ["Name", "description"],
         },
       ],
     });
