@@ -4,5 +4,12 @@ export interface UserAttributes {
   lastName: string;
   email: string;
   password: string;
-  Role: string;
+  roles: [];
+}
+export interface RoleAttributes {
+  id: number;
+  Name: string;
+  description: string;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
