@@ -101,7 +101,8 @@ export const viewUserRoles = async (req: Request, res: Response) => {
     // Extract relevant information for response
     const userRoles = {
       userId: userWithRoles.id,
-      username: userWithRoles.username,
+      username: userWithRoles.firstName,
+      userEmail: userWithRoles.email,
       roles: userWithRoles.Roles.map((role: any) => ({
         roleId: role.id,
         roleName: role.Name,
