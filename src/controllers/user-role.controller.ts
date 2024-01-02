@@ -82,3 +82,26 @@ export const viewUserRoles = async (req: Request, res: Response) => {
     return res.status(500).json({ message: "Internal Server Error" });
   }
 };
+
+export const unAssignRoleToUser = async (req: Request, res: Response) => {
+  const { userId, roleId } = req.body;
+  try {
+    const user = await db.User.findByPk(userId);
+    const role = await db.Role.findByPk(roleId);
+    if (!user || !role) {
+      return res.status(404).json({ message: "User or role not found" });
+    }
+    const hasRole = await user.hasRole(role);
+    if (!hasRole) {
+      return res.status(403).json({
+        message: "User doesnot have such role ..!!",
+      });
+    }
+    await user.removeRole(role);
+    return res.status(200).json({
+      message: "Role un assigned to user successful..!",
+    });
+  } catch (error) {
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+};
