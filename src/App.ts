@@ -4,6 +4,7 @@ import authRoutes from "./routes/authRoutes";
 import usersRoutes from "./routes/userRoutes";
 import rolesRoutes from "./routes/rolesRoutes";
 import userRolesRoutes from "./routes/userRoleRoutes";
+import productRoutes from "./routes/productRoutes";
 import cors from "cors";
 
 const app = express();
@@ -23,6 +24,7 @@ app.use("/auth", authRoutes);
 app.use("/users", usersRoutes);
 app.use("/roles", rolesRoutes);
 app.use("/user", userRolesRoutes);
+app.use("/product", productRoutes);
 
 app.listen(port, () => {
   connectDB();
