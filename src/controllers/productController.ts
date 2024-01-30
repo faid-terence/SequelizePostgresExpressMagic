@@ -34,13 +34,35 @@ export const createProduct = async (req: Request, res: Response) => {
 
 export const getAllProducts = async (req: Request, res: Response) => {
   try {
-    const roles = await db.Product.findAll({ include: [] });
-    if (!roles) {
+    const products = await db.Product.findAll({ include: [] });
+    if (!products) {
       return res.status(404).json({ message: "No Products found" });
     }
-    return res
-      .status(200)
-      .json({ message: "Retrieving Products ......!!", roles });
+    const productsNumber = products.length;
+    return res.status(200).json({
+      message: "Retrieving Products ......!!",
+      products,
+      TotalProducts: productsNumber,
+    });
+  } catch (error: any) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+export const getProductById = async (req: Request, res: Response) => {
+  const productId = req.params.id;
+
+  if (!productId) {
+    return res.status(400).json({ message: "Invalid Product ID" });
+  }
+  try {
+    const product = await db.Product.findByPk(productId);
+    if (!product) {
+      return res.status(404).json({ message: "Product Not Found" });
+    }
+    return res.status(200).json({ message: "Role Found !!!!!!", product });
+  } catch (error) {}
+  try {
   } catch (error: any) {
     return res.status(500).json({ message: error.message });
   }
