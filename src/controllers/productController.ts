@@ -67,3 +67,32 @@ export const getProductById = async (req: Request, res: Response) => {
     return res.status(500).json({ message: error.message });
   }
 };
+
+export const updateProductById = async (req: Request, res: Response) => {
+  const productId = req.params.id;
+  const { productName, description, price } = req.body;
+
+  try {
+    const product = await db.Product.findByPk(productId);
+    if (!product) {
+      return res.status(404).json({ message: "Product Not Found !!! " });
+    }
+    if (req.body.productName) {
+      product.name = req.body.productName;
+    }
+    if (req.body.description) {
+      product.name = req.body.description;
+    }
+    if (req.body.price) {
+      product.name = req.body.price;
+    }
+
+    const updatedProduct = await product.save();
+    return res.status(200).json({
+      message: "Product Updated Successfully.....!!",
+      updatedProduct,
+    });
+  } catch (error: any) {
+    return res.status(500).json(error.message);
+  }
+};
