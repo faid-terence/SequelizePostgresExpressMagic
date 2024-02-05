@@ -62,3 +62,6 @@ Brief project description and its purpose.
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
+
+
+## Terence Faid JABO
